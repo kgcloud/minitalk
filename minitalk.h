@@ -6,6 +6,14 @@
 # include <stdio.h>
 # include <signal.h>
 
-//SIGUSR1 and SIGUSR2
+struct s_global
+{
+	char	c;
+	int		i;
+};
+
+
+int     main(int ac, char **av);
+int		send_letter(int pid, unsigned char letter, int i);
 
 #endif
