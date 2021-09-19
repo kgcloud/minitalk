@@ -6,7 +6,7 @@
 /*   By: KgCloud <KgCloud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 16:48:34 by canjugun          #+#    #+#             */
-/*   Updated: 2021/09/16 14:46:34 by KgCloud          ###   ########.fr       */
+/*   Updated: 2021/09/19 15:39:19 by KgCloud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void    o_h(int sig)
     kg.i++;
     if (kg.i % 8 == 0)
     {
-        printf("%s", &kg.c);
+        write(1, &kg.c, 1);
         kg.i = 0;
     }
 }
@@ -36,7 +36,10 @@ void    z_s(int sig, siginfo_t *info, void *uap)
     kg.i++;
     if (kg.i % 8 == 0 && kg.i != 0)
     {
-        printf("%s", &kg.c);
+        //if (kg.c == '\0')
+		//	kill(info->si_pid, SIGUSR1);
+		//else
+        write(1,&kg.c, 1);
         kg.i = 0;
     }
 }
@@ -46,17 +49,19 @@ int     main(int ac, char **av)
     struct sigaction    one;
     struct sigaction    zero;
     
-    if (ac != 1)
-        (void)av;
+    (void)ac;
+    (void)av;
     one.sa_handler = o_h;
     zero.sa_sigaction = z_s;
     zero.sa_flags = SA_SIGINFO;
-    printf("%d\n", sigaction(SIGUSR1, &one, NULL)); // a proteger
-    printf("%d\n", sigaction(SIGUSR2, &zero, NULL)); // a proteger 
+  // a proteger 
     kg.c = 0;
     kg.i = 0;
     printf("%d\n", getpid());
     while(1)
     {
+        sigaction(SIGUSR1, &one, NULL); // a proteger
+        sigaction(SIGUSR2, &zero, NULL);
     }
+    return(0);
 }

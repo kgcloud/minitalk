@@ -6,7 +6,7 @@
 /*   By: KgCloud <KgCloud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 16:49:54 by canjugun          #+#    #+#             */
-/*   Updated: 2021/09/16 14:48:03 by KgCloud          ###   ########.fr       */
+/*   Updated: 2021/09/19 14:57:18 by KgCloud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,17 @@ int		send_letter(int pid, unsigned char letter, int i)
 	while(i >=0)
 	{
 		if ((letter >> i) & 1)
+		{	
 			kill(pid, SIGUSR1); //a proteger
+			printf("send\n");
+		}
 		else
+		{	
 			kill(pid, SIGUSR2); // a proteger
+			printf("send\n");
+		}
 		i--;
+		usleep(50);
 	}
 	return (0);
 }
